@@ -47,19 +47,19 @@ let simpleScorer = function(word) {
 };
 
 let vowelBonusScorer = function(word) {
-   word = word.toUpperCase();
+   word = word.toLowerCase();
    let score = 0;
 
    for (let i = 0; i < word.length; i++) {
-      if (word[i] === 'A') {
+      if (word[i] === 'a') {
          score+=3;
-      } else if (word[i] === 'E') {
+      } else if (word[i] === 'e') {
          score+=3;
-      } else if (word[i] === 'I') {
+      } else if (word[i] === 'i') {
          score+=3;
-      } else if (word[i] === 'O') {
+      } else if (word[i] === 'o') {
          score+=3;
-      } else if (word[i] === 'U') {
+      } else if (word[i] === 'u') {
          score+=3;
       } else {
          score+=1;
@@ -75,7 +75,7 @@ let scrabbleScorer = function(word) {
 	for (let i = 0; i < word.length; i++) {
 	  for (const letterValue in newPointStructure) {
 		 if (letterValue.includes(word[i])) {
-			score += Number(newPointStructure[letterValue]);
+			score += newPointStructure[letterValue];
 		 }
 	  }
 	}
@@ -99,35 +99,56 @@ let scorerThree = {
    description: 'The traditional scoring algorithm.',
    scoringFunction: scrabbleScorer,
 };
-const scoringAlgorithms = [scorerOne, scorerTwo, scorerThree];
+const scoringAlgorithms = [{scorerFunction: simpleScorer}, {scorerFunction: vowelBonusScorer}, {scorerFunction: scrabbleScorer}];
 
 function scorerPrompt() {
-   let score = 0;
    let info = input.question(`Which scoring algorithm would you like to use?\n\n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: `);
    return scoringAlgorithms[info];
 }
 
-function transform(obj) {
-   for (key in obj) {
-      let newValue = (obj[key]).toString().toLowerCase().split(',');
-      obj[key] = newValue;
+function transform(object) {
+   let newObject = {};
+   let pointOneArr = oldPointStructure[1];
+   let pointTwoArr = oldPointStructure[2];
+   let pointThreeArr = oldPointStructure[3];
+   let pointFourArr = oldPointStructure[4];
+   let pointFiveArr = oldPointStructure[5];
+   let pointEightArr = oldPointStructure[8];
+   let pointTenArr = oldPointStructure[10];
+
+   for (let i = 0; i < pointOneArr.length; i++) {
+      newObject[pointOneArr[i].toLowerCase()] = 1;
    }
 
-   let newObj = {};
-   for (let key in obj) {
-      newObj[obj[key]] = key;
+   for (let i = 0; i < pointTwoArr.length; i++) {
+      newObject[pointTwoArr[i].toLowerCase()] = 2;
    }
 
-   // Switched values need to remain as a Number?
-   // for (let key in newObj) {
-   //    let newValue = Number(newObj[letters]);
-   //    newObj[key] = newValue;
-   // }
-   return newObj;
+   for (let i = 0; i < pointThreeArr.length; i++) {
+      newObject[pointThreeArr[i].toLowerCase()] = 3;
+   }
+
+   for (let i = 0; i < pointFourArr.length; i++) {
+      newObject[pointFourArr[i].toLowerCase()] = 4;
+   }
+
+   for (let i = 0; i < pointFiveArr.length; i++) {
+      newObject[pointFiveArr[i].toLowerCase()] = 5;
+   }
+
+   for (let i = 0; i < pointEightArr.length; i++) {
+      newObject[pointEightArr[i].toLowerCase()] = 8;
+   }
+
+   for (let i = 0; i < pointTenArr.length; i++) {
+      newObject[pointTenArr[i].toLowerCase()] = 10;
+   }
+
+   return newObject;
 }
-
-let obj = transform(oldPointStructure);
-console.log(obj['q,z']);
+// AREA FOR TESTING RANDOM CODE:
+// console.log(transform(oldPointStructure));
+// console.log(oldPointStructure[1].length);
 
 let newPointStructure = transform(oldPointStructure);
 
@@ -136,21 +157,14 @@ function runProgram() {
    let scoringObj = scorerPrompt();
    let score = 0;
    if (scoringObj === scoringAlgorithms[0]) {
-      score = scoringAlgorithms[0].scoringFunction(word);
+      score = scoringAlgorithms[0].scorerFunction(word);
    } else if (scoringObj === scoringAlgorithms[1]) {
-      score = scoringAlgorithms[1].scoringFunction(word);
+      score = scoringAlgorithms[1].scorerFunction(word);
    } else if (scoringObj === scoringAlgorithms[2]) {
-      score = scoringAlgorithms[2].scoringFunction(word);
+      score = scoringAlgorithms[2].scorerFunction(word);
    }
    return console.log(`Score for '${word}': ${score}`);
 }
-
-// TESTING MY CODE:
-// console.log(newPointStructure.d);
-// console.log(scorerPrompt());
-// console.log(initialPrompt());
-// console.log(scoringAlgorithms[0].name);
-// console.log(scoringAlgorithms[0].scoringFunction('donut'));
 
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
