@@ -108,47 +108,18 @@ function scorerPrompt() {
 
 function transform(object) {
    let newObject = {};
-   let pointOneArr = oldPointStructure[1];
-   let pointTwoArr = oldPointStructure[2];
-   let pointThreeArr = oldPointStructure[3];
-   let pointFourArr = oldPointStructure[4];
-   let pointFiveArr = oldPointStructure[5];
-   let pointEightArr = oldPointStructure[8];
-   let pointTenArr = oldPointStructure[10];
+   let newKey = '';
+   let newValue = 0;
 
-   for (let i = 0; i < pointOneArr.length; i++) {
-      newObject[pointOneArr[i].toLowerCase()] = 1;
+   for (let key in object) {
+      for (let i = 0; i < ((object[key]).length); i++) {
+         newKey = (object[key][i]).toLowerCase();
+         newValue = Number(key);
+         newObject[newKey] = newValue;
+      }
    }
-
-   for (let i = 0; i < pointTwoArr.length; i++) {
-      newObject[pointTwoArr[i].toLowerCase()] = 2;
-   }
-
-   for (let i = 0; i < pointThreeArr.length; i++) {
-      newObject[pointThreeArr[i].toLowerCase()] = 3;
-   }
-
-   for (let i = 0; i < pointFourArr.length; i++) {
-      newObject[pointFourArr[i].toLowerCase()] = 4;
-   }
-
-   for (let i = 0; i < pointFiveArr.length; i++) {
-      newObject[pointFiveArr[i].toLowerCase()] = 5;
-   }
-
-   for (let i = 0; i < pointEightArr.length; i++) {
-      newObject[pointEightArr[i].toLowerCase()] = 8;
-   }
-
-   for (let i = 0; i < pointTenArr.length; i++) {
-      newObject[pointTenArr[i].toLowerCase()] = 10;
-   }
-
    return newObject;
 }
-// AREA FOR TESTING RANDOM CODE:
-// console.log(transform(oldPointStructure));
-// console.log(oldPointStructure[1].length);
 
 let newPointStructure = transform(oldPointStructure);
 
